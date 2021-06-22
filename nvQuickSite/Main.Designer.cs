@@ -1,4 +1,4 @@
-﻿namespace nvQuickSite
+﻿namespace nvQuickNop
 {
     partial class Main
     {

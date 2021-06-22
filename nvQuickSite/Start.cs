@@ -15,7 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with nvQuickSite.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace nvQuickSite
+using SharpCompress.Archives;
+using SharpCompress.Common;
+
+namespace nvQuickNop
 {
     using System;
     using System.Collections.Generic;
@@ -27,18 +30,17 @@ namespace nvQuickSite
     using System.Linq;
     using System.Net;
     using System.Windows.Forms;
-
-    using Ionic.Zip;
     using MetroFramework.Controls;
-    using nvQuickSite.Controllers;
-    using nvQuickSite.Controllers.Exceptions;
-    using nvQuickSite.Controls.Settings;
-    using nvQuickSite.Controls.Sites;
-    using nvQuickSite.Exceptions;
-    using nvQuickSite.Models;
+    using nvQuickNop.Controllers;
+    using nvQuickNop.Controllers.Exceptions;
+    using nvQuickNop.Controls.Settings;
+    using nvQuickNop.Controls.Sites;
+    using nvQuickNop.Exceptions;
+    using nvQuickNop.Models;
     using Ookii.Dialogs;
     using Serilog;
     using Serilog.Core;
+    using SharpCompress.Readers;
 
     /// <summary>
     /// Implementes the UI tabs and tiles logic.
@@ -165,8 +167,8 @@ namespace nvQuickSite
             this.tabControl.SelectedIndex = 0;
             this.tabSiteInfo.Enabled = false;
             this.tabControl.TabPages.Remove(this.tabSiteInfo);
-            this.tabDatabaseInfo.Enabled = false;
-            this.tabControl.TabPages.Remove(this.tabDatabaseInfo);
+            //this.tabDatabaseInfo.Enabled = false;
+            //this.tabControl.TabPages.Remove(this.tabDatabaseInfo);
             this.tabProgress.Enabled = false;
             this.tabControl.TabPages.Remove(this.tabProgress);
         }
@@ -371,7 +373,7 @@ namespace nvQuickSite
             this.tabInstallPackage.Enabled = false;
             this.tabControl.TabPages.Insert(1, this.tabSiteInfo);
             this.tabSiteInfo.Enabled = true;
-            this.tabDatabaseInfo.Enabled = false;
+            //this.tabDatabaseInfo.Enabled = false;
             this.tabProgress.Enabled = false;
             this.tabControl.SelectedIndex = 1;
         }
@@ -493,11 +495,7 @@ namespace nvQuickSite
             {
                 this.tabInstallPackage.Enabled = false;
                 this.tabSiteInfo.Enabled = false;
-                this.tabControl.TabPages.Insert(2, this.tabDatabaseInfo);
-                this.tabDatabaseInfo.Enabled = true;
-                this.tabProgress.Enabled = false;
-                this.tabControl.SelectedIndex = 2;
-                this.SaveUserSettings();
+                ExtractInstallSite();
             }
         }
 
@@ -521,28 +519,8 @@ namespace nvQuickSite
             this.txtDBPassword.UseStyleColors = false;
         }
 
-        private void btnDatabaseInfoBack_Click(object sender, EventArgs e)
+        private void ExtractInstallSite()
         {
-            this.tabInstallPackage.Enabled = false;
-            this.tabSiteInfo.Enabled = true;
-            this.tabDatabaseInfo.Enabled = false;
-            this.tabControl.TabPages.Remove(this.tabDatabaseInfo);
-            this.tabControl.SelectedIndex = 1;
-        }
-
-        private void btnDatabaseInfoNext_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(this.txtDBServerName.Text) || string.IsNullOrWhiteSpace(this.txtDBName.Text))
-            {
-                DialogController.ShowMessage(
-                    "Database Info",
-                    "Please make sure you have entered a Database Server Name and\na Database Name.",
-                    SystemIcons.Warning,
-                    DialogController.DialogButtons.OK);
-
-                return;
-            }
-
             try
             {
                 IISController.CreateSite(
@@ -556,45 +534,20 @@ namespace nvQuickSite
                 FileSystemController.CreateDirectories(
                     this.InstallFolder,
                     this.SiteName,
-                    this.chkSiteSpecificAppPool.Checked,
-                    this.txtDBServerName.Text.Trim(),
-                    this.txtDBServerName.Text,
-                    this.rdoWindowsAuthentication.Checked,
-                    this.txtDBUserName.Text,
-                    this.txtDBPassword.Text);
-
-                var databaseController = new DatabaseController(
-                    this.txtDBName.Text,
-                    this.txtDBServerName.Text,
-                    this.rdoWindowsAuthentication.Checked,
-                    this.txtDBUserName.Text,
-                    this.txtDBPassword.Text,
-                    this.InstallFolder,
-                    this.chkSiteSpecificAppPool.Checked,
-                    this.SiteName);
-                databaseController.CreateDatabase();
-                databaseController.SetDatabasePermissions();
+                    this.chkSiteSpecificAppPool.Checked);
 
                 this.tabInstallPackage.Enabled = false;
                 this.tabSiteInfo.Enabled = false;
-                this.tabDatabaseInfo.Enabled = false;
-                this.tabControl.TabPages.Insert(3, this.tabProgress);
+                this.tabControl.TabPages.Insert(2, this.tabProgress);
                 this.tabProgress.Enabled = true;
                 this.lblProgress.Visible = true;
                 this.progressBar.Visible = true;
-                this.tabControl.SelectedIndex = 3;
+                this.tabControl.SelectedIndex = 2;
 
                 this.SaveUserSettings();
 
                 this.ReadAndExtract(this.txtLocalInstallPackage.Text, Path.Combine(this.txtInstallBaseFolder.Text, this.txtInstallSubFolder.Text, "Website"));
-                FileSystemController.ModifyConfig(
-                    this.txtDBServerName.Text,
-                    this.rdoWindowsAuthentication.Checked,
-                    this.txtDBUserName.Text,
-                    this.txtDBPassword.Text,
-                    this.txtDBName.Text,
-                    this.InstallFolder);
-
+                
                 this.btnVisitSite.Visible = true;
                 Log.Logger.Information("Site {siteName} ready to visit", this.SiteName);
             }
@@ -626,15 +579,23 @@ namespace nvQuickSite
             try
             {
                 Log.Logger.Information("Extracting package");
-                var myZip = ZipFile.Read(openPath);
-                foreach (var entry in myZip)
+                using (var archive = ArchiveFactory.Open(openPath))
                 {
-                    this.totalSize += entry.UncompressedSize;
+                    archive.EntryExtractionBegin += this.ArchiveOnEntryExtractionBegin;
+                    archive.EntryExtractionEnd += this.ArchiveOnEntryExtractionEnd;
+                    totalSize = archive.TotalUncompressSize;
+                    this.progressBar.Maximum = (int)this.totalSize;
+                    foreach (var archiveEntry in archive.Entries.Where(x => !x.IsDirectory))
+                    {
+                        archiveEntry.WriteToDirectory(savePath, new ExtractionOptions
+                        {
+                            ExtractFullPath = true,
+                            Overwrite = true,
+                            PreserveFileTime = true
+                        });
+                    }
                 }
 
-                this.progressBar.Maximum = (int)this.totalSize;
-                myZip.ExtractProgress += new EventHandler<ExtractProgressEventArgs>(this.myZip_ExtractProgress);
-                myZip.ExtractAll(savePath, ExtractExistingFileAction.OverwriteSilently);
                 this.lblProgressStatus.Text = "Congratulations! Your new site is now ready to visit!";
             }
             catch (Exception ex)
@@ -647,23 +608,15 @@ namespace nvQuickSite
             Log.Logger.Information("Extracted package from {openPath} to {savePath}", openPath, savePath);
         }
 
-        private void myZip_ExtractProgress(object sender, ExtractProgressEventArgs e)
+        private void ArchiveOnEntryExtractionEnd(object sender, ArchiveExtractionEventArgs<IArchiveEntry> e)
         {
-            System.Windows.Forms.Application.DoEvents();
-            if (this.total != e.TotalBytesToTransfer)
-            {
-                this.sum += this.total - this.lastVal + e.BytesTransferred;
-                this.total = e.TotalBytesToTransfer;
-                this.lblProgressStatus.Text = "Copying: " + e.CurrentEntry.FileName;
-            }
-            else
-            {
-                this.sum += e.BytesTransferred - this.lastVal;
-            }
+           Application.DoEvents();
+           progressBar.Value += (int) e.Item.Size;
+        }
 
-            this.lastVal = e.BytesTransferred;
-
-            this.progressBar.Value = (int)this.sum;
+        private void ArchiveOnEntryExtractionBegin(object sender, ArchiveExtractionEventArgs<IArchiveEntry> e)
+        {
+            this.lblProgressStatus.Text = "Copying: " + e.Item.Key;
         }
 
         private void btnVisitSite_Click(object sender, EventArgs e)
@@ -682,22 +635,22 @@ namespace nvQuickSite
 
         private void tileMorenvQuickProducts_Click(object sender, EventArgs e)
         {
-            Process.Start("https://github.com/nvisionative/nvQuickSite/wiki");
+            Process.Start("https://github.com/ForemostMedia/nvQuickSite/wiki");
         }
 
         private void tileDNNCommunity_Click(object sender, EventArgs e)
         {
-            Process.Start("https://dnncommunity.org");
+            Process.Start("https://www.nopcommerce.com/en/boards");
         }
 
         private void tileDNNDocs_Click(object sender, EventArgs e)
         {
-            Process.Start("https://dnndocs.com");
+            Process.Start("https://docs.nopcommerce.com/en/index.html");
         }
 
         private void tileDNNAwareness_Click(object sender, EventArgs e)
         {
-            Process.Start("https://twitter.com/DNNAwareness");
+            Process.Start("https://twitter.com/nopCommerce");
         }
 
         private void tileQuickSettings_Click(object sender, EventArgs e)

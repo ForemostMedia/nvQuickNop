@@ -7,9 +7,9 @@
     <ProjectGuid>{3D661BAD-45EB-4524-9650-78805CD31682}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>nvQuickSite</RootNamespace>
-    <AssemblyName>nvQuickSite</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>nvQuickNop</RootNamespace>
+    <AssemblyName>nvQuickNop</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
@@ -47,7 +47,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>
     </CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Debug\nvQuickSite.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\nvQuickNop.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -61,7 +61,7 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>
     </CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Release\nvQuickSite.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\nvQuickNop.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>0A724629BFD7DFCC40A44BF2FB61D13E16ED4A93</ManifestCertificateThumbprint>
@@ -266,9 +266,6 @@
     <PackageReference Include="Analytics">
       <Version>2.0.2</Version>
     </PackageReference>
-    <PackageReference Include="DotNetZip">
-      <Version>1.13.3</Version>
-    </PackageReference>
     <PackageReference Include="MetroFramework">
       <Version>1.2.0.3</Version>
     </PackageReference>
@@ -297,6 +294,9 @@
     </PackageReference>
     <PackageReference Include="Serilog.Sinks.File">
       <Version>4.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="SharpCompress">
+      <Version>0.28.3</Version>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
       <Version>1.1.118</Version>

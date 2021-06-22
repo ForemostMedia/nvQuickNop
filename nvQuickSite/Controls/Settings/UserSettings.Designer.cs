@@ -1,4 +1,4 @@
-﻿namespace nvQuickSite.Controls.Settings
+﻿namespace nvQuickNop.Controls.Settings
 {
     partial class UserSettings
     {
@@ -91,7 +91,7 @@
             // 
             this.dialogIcon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.dialogIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.dialogIcon.Image = global::nvQuickSite.Properties.Resources.user_settings;
+            this.dialogIcon.Image = global::nvQuickNop.Properties.Resources.user_settings;
             this.dialogIcon.Location = new System.Drawing.Point(11, 23);
             this.dialogIcon.Name = "dialogIcon";
             this.dialogIcon.Size = new System.Drawing.Size(91, 88);
@@ -161,7 +161,7 @@
             // logsIcon
             // 
             this.logsIcon.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.logsIcon.Image = global::nvQuickSite.Properties.Resources.logs_icon;
+            this.logsIcon.Image = global::nvQuickNop.Properties.Resources.logs_icon;
             this.logsIcon.Location = new System.Drawing.Point(493, 64);
             this.logsIcon.Name = "logsIcon";
             this.logsIcon.Size = new System.Drawing.Size(11, 15);

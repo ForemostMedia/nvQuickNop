@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with nvQuickSite.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace nvQuickSite.Controllers
+namespace nvQuickNop.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace nvQuickSite.Controllers
     using System.Runtime.InteropServices;
 
     using Microsoft.Web.Administration;
-    using nvQuickSite.Controllers.Exceptions;
+    using nvQuickNop.Controllers.Exceptions;
     using Serilog;
 
     /// <summary>
@@ -61,7 +61,7 @@ namespace nvQuickSite.Controllers
 
                     if (useSiteSpecificAppPool)
                     {
-                        var appPoolName = siteName + "_nvQuickSite";
+                        var appPoolName = siteName + "_nvQuickNop";
                         ApplicationPool newPool = iisManager.ApplicationPools.Add(appPoolName);
                         newPool.ManagedRuntimeVersion = "v4.0";
                         site.ApplicationDefaults.ApplicationPoolName = appPoolName;
@@ -173,7 +173,7 @@ namespace nvQuickSite.Controllers
                 sites = sites
                     .Where(s =>
                         s.ApplicationDefaults.ApplicationPoolName.EndsWith(
-                            "_nvQuickSite",
+                            "_nvQuickNop",
                             StringComparison.Ordinal))
                     .ToList();
 
@@ -296,12 +296,12 @@ namespace nvQuickSite.Controllers
                         if (deleteSiteIfExists)
                         {
                             Log.Logger.Verbose("The user requested for the existing site {siteName} to be deleted", siteName);
-                            if (site.ApplicationDefaults.ApplicationPoolName == siteName + "_nvQuickSite")
+                            if (site.ApplicationDefaults.ApplicationPoolName == siteName + "_nvQuickNop")
                             {
                                 ApplicationPoolCollection appPools = iisManager.ApplicationPools;
                                 foreach (ApplicationPool appPool in appPools)
                                 {
-                                    if (appPool.Name == siteName + "_nvQuickSite")
+                                    if (appPool.Name == siteName + "_nvQuickNop")
                                     {
                                         iisManager.ApplicationPools.Remove(appPool);
                                         break;

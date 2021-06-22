@@ -1,4 +1,4 @@
-﻿namespace nvQuickSite
+﻿namespace nvQuickNop
 {
     partial class Start
     {
@@ -53,7 +53,11 @@
             this.cboProductName = new MetroFramework.Controls.MetroComboBox();
             this.btnViewAllReleases = new MetroFramework.Controls.MetroButton();
             this.tabControl = new MetroFramework.Controls.MetroTabControl();
-            this.tabDatabaseInfo = new MetroFramework.Controls.MetroTabPage();
+            this.tabProgress = new MetroFramework.Controls.MetroTabPage();
+            this.btnVisitSite = new MetroFramework.Controls.MetroButton();
+            this.lblProgressStatus = new MetroFramework.Controls.MetroLabel();
+            this.lblProgress = new MetroFramework.Controls.MetroLabel();
+            this.progressBar = new MetroFramework.Controls.MetroProgressBar();
             this.btnDatabaseInfoBack = new MetroFramework.Controls.MetroButton();
             this.btnDatabaseInfoNext = new MetroFramework.Controls.MetroButton();
             this.lblDBName = new MetroFramework.Controls.MetroLabel();
@@ -66,11 +70,6 @@
             this.rdoWindowsAuthentication = new MetroFramework.Controls.MetroRadioButton();
             this.lblDBServerName = new MetroFramework.Controls.MetroLabel();
             this.txtDBServerName = new MetroFramework.Controls.MetroTextBox();
-            this.tabProgress = new MetroFramework.Controls.MetroTabPage();
-            this.btnVisitSite = new MetroFramework.Controls.MetroButton();
-            this.lblProgressStatus = new MetroFramework.Controls.MetroLabel();
-            this.lblProgress = new MetroFramework.Controls.MetroLabel();
-            this.progressBar = new MetroFramework.Controls.MetroProgressBar();
             this.tileDNNAwareness = new MetroFramework.Controls.MetroTile();
             this.tileDNNDocs = new MetroFramework.Controls.MetroTile();
             this.tileMorenvQuickProducts = new MetroFramework.Controls.MetroTile();
@@ -81,7 +80,6 @@
             this.tabSiteInfo.SuspendLayout();
             this.tabInstallPackage.SuspendLayout();
             this.tabControl.SuspendLayout();
-            this.tabDatabaseInfo.SuspendLayout();
             this.tabProgress.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -359,7 +357,6 @@
             // 
             this.tabControl.Controls.Add(this.tabInstallPackage);
             this.tabControl.Controls.Add(this.tabSiteInfo);
-            this.tabControl.Controls.Add(this.tabDatabaseInfo);
             this.tabControl.Controls.Add(this.tabProgress);
             this.tabControl.Location = new System.Drawing.Point(3, 14);
             this.tabControl.Multiline = true;
@@ -368,48 +365,75 @@
             this.tabControl.Size = new System.Drawing.Size(607, 294);
             this.tabControl.TabIndex = 26;
             // 
-            // tabDatabaseInfo
+            // tabProgress
             // 
-            this.tabDatabaseInfo.Controls.Add(this.btnDatabaseInfoBack);
-            this.tabDatabaseInfo.Controls.Add(this.btnDatabaseInfoNext);
-            this.tabDatabaseInfo.Controls.Add(this.lblDBName);
-            this.tabDatabaseInfo.Controls.Add(this.txtDBName);
-            this.tabDatabaseInfo.Controls.Add(this.txtDBPassword);
-            this.tabDatabaseInfo.Controls.Add(this.lblDBPassword);
-            this.tabDatabaseInfo.Controls.Add(this.lblDBUserName);
-            this.tabDatabaseInfo.Controls.Add(this.txtDBUserName);
-            this.tabDatabaseInfo.Controls.Add(this.rdoSQLServerAuthentication);
-            this.tabDatabaseInfo.Controls.Add(this.rdoWindowsAuthentication);
-            this.tabDatabaseInfo.Controls.Add(this.lblDBServerName);
-            this.tabDatabaseInfo.Controls.Add(this.txtDBServerName);
-            this.tabDatabaseInfo.HorizontalScrollbarBarColor = true;
-            this.tabDatabaseInfo.Location = new System.Drawing.Point(4, 35);
-            this.tabDatabaseInfo.Name = "tabDatabaseInfo";
-            this.tabDatabaseInfo.Size = new System.Drawing.Size(599, 255);
-            this.tabDatabaseInfo.TabIndex = 3;
-            this.tabDatabaseInfo.Text = "Database Info";
-            this.tabDatabaseInfo.VerticalScrollbarBarColor = true;
+            this.tabProgress.Controls.Add(this.btnVisitSite);
+            this.tabProgress.Controls.Add(this.lblProgressStatus);
+            this.tabProgress.Controls.Add(this.lblProgress);
+            this.tabProgress.Controls.Add(this.progressBar);
+            this.tabProgress.HorizontalScrollbarBarColor = true;
+            this.tabProgress.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.tabProgress.Location = new System.Drawing.Point(4, 35);
+            this.tabProgress.Name = "tabProgress";
+            this.tabProgress.Size = new System.Drawing.Size(599, 255);
+            this.tabProgress.TabIndex = 2;
+            this.tabProgress.Text = "Progress";
+            this.tabProgress.VerticalScrollbarBarColor = true;
+            // 
+            // btnVisitSite
+            // 
+            this.btnVisitSite.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnVisitSite.Highlight = true;
+            this.btnVisitSite.Location = new System.Drawing.Point(3, 192);
+            this.btnVisitSite.Name = "btnVisitSite";
+            this.btnVisitSite.Size = new System.Drawing.Size(593, 60);
+            this.btnVisitSite.Style = MetroFramework.MetroColorStyle.Purple;
+            this.btnVisitSite.TabIndex = 5;
+            this.btnVisitSite.Text = "&Visit Site";
+            this.btnVisitSite.Visible = false;
+            this.btnVisitSite.Click += new System.EventHandler(this.btnVisitSite_Click);
+            // 
+            // lblProgressStatus
+            // 
+            this.lblProgressStatus.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.lblProgressStatus.Location = new System.Drawing.Point(0, 62);
+            this.lblProgressStatus.Name = "lblProgressStatus";
+            this.lblProgressStatus.Size = new System.Drawing.Size(597, 19);
+            this.lblProgressStatus.TabIndex = 4;
+            this.lblProgressStatus.UseStyleColors = true;
+            // 
+            // lblProgress
+            // 
+            this.lblProgress.AutoSize = true;
+            this.lblProgress.Location = new System.Drawing.Point(0, 11);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(60, 19);
+            this.lblProgress.TabIndex = 3;
+            this.lblProgress.Text = "Progress";
+            this.lblProgress.Visible = false;
+            // 
+            // progressBar
+            // 
+            this.progressBar.HideProgressText = false;
+            this.progressBar.Location = new System.Drawing.Point(0, 36);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(597, 23);
+            this.progressBar.TabIndex = 2;
+            this.progressBar.Visible = false;
             // 
             // btnDatabaseInfoBack
             // 
-            this.btnDatabaseInfoBack.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDatabaseInfoBack.Location = new System.Drawing.Point(0, 216);
+            this.btnDatabaseInfoBack.Location = new System.Drawing.Point(0, 0);
             this.btnDatabaseInfoBack.Name = "btnDatabaseInfoBack";
-            this.btnDatabaseInfoBack.Size = new System.Drawing.Size(90, 36);
-            this.btnDatabaseInfoBack.TabIndex = 13;
-            this.btnDatabaseInfoBack.Text = "&Back";
-            this.btnDatabaseInfoBack.Click += new System.EventHandler(this.btnDatabaseInfoBack_Click);
+            this.btnDatabaseInfoBack.Size = new System.Drawing.Size(75, 23);
+            this.btnDatabaseInfoBack.TabIndex = 0;
             // 
             // btnDatabaseInfoNext
             // 
-            this.btnDatabaseInfoNext.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDatabaseInfoNext.Highlight = true;
-            this.btnDatabaseInfoNext.Location = new System.Drawing.Point(507, 216);
+            this.btnDatabaseInfoNext.Location = new System.Drawing.Point(0, 0);
             this.btnDatabaseInfoNext.Name = "btnDatabaseInfoNext";
-            this.btnDatabaseInfoNext.Size = new System.Drawing.Size(90, 36);
-            this.btnDatabaseInfoNext.TabIndex = 12;
-            this.btnDatabaseInfoNext.Text = "&Next";
-            this.btnDatabaseInfoNext.Click += new System.EventHandler(this.btnDatabaseInfoNext_Click);
+            this.btnDatabaseInfoNext.Size = new System.Drawing.Size(75, 23);
+            this.btnDatabaseInfoNext.TabIndex = 0;
             // 
             // lblDBName
             // 
@@ -509,62 +533,6 @@
             this.txtDBServerName.Text = "(local)";
             this.txtDBServerName.UseStyleColors = true;
             // 
-            // tabProgress
-            // 
-            this.tabProgress.Controls.Add(this.btnVisitSite);
-            this.tabProgress.Controls.Add(this.lblProgressStatus);
-            this.tabProgress.Controls.Add(this.lblProgress);
-            this.tabProgress.Controls.Add(this.progressBar);
-            this.tabProgress.HorizontalScrollbarBarColor = true;
-            this.tabProgress.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.tabProgress.Location = new System.Drawing.Point(4, 35);
-            this.tabProgress.Name = "tabProgress";
-            this.tabProgress.Size = new System.Drawing.Size(599, 255);
-            this.tabProgress.TabIndex = 2;
-            this.tabProgress.Text = "Progress";
-            this.tabProgress.VerticalScrollbarBarColor = true;
-            // 
-            // btnVisitSite
-            // 
-            this.btnVisitSite.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnVisitSite.Highlight = true;
-            this.btnVisitSite.Location = new System.Drawing.Point(3, 192);
-            this.btnVisitSite.Name = "btnVisitSite";
-            this.btnVisitSite.Size = new System.Drawing.Size(593, 60);
-            this.btnVisitSite.Style = MetroFramework.MetroColorStyle.Purple;
-            this.btnVisitSite.TabIndex = 5;
-            this.btnVisitSite.Text = "&Visit Site";
-            this.btnVisitSite.Visible = false;
-            this.btnVisitSite.Click += new System.EventHandler(this.btnVisitSite_Click);
-            // 
-            // lblProgressStatus
-            // 
-            this.lblProgressStatus.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.lblProgressStatus.Location = new System.Drawing.Point(0, 62);
-            this.lblProgressStatus.Name = "lblProgressStatus";
-            this.lblProgressStatus.Size = new System.Drawing.Size(597, 19);
-            this.lblProgressStatus.TabIndex = 4;
-            this.lblProgressStatus.UseStyleColors = true;
-            // 
-            // lblProgress
-            // 
-            this.lblProgress.AutoSize = true;
-            this.lblProgress.Location = new System.Drawing.Point(0, 11);
-            this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(60, 19);
-            this.lblProgress.TabIndex = 3;
-            this.lblProgress.Text = "Progress";
-            this.lblProgress.Visible = false;
-            // 
-            // progressBar
-            // 
-            this.progressBar.HideProgressText = false;
-            this.progressBar.Location = new System.Drawing.Point(0, 36);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(597, 23);
-            this.progressBar.TabIndex = 2;
-            this.progressBar.Visible = false;
-            // 
             // tileDNNAwareness
             // 
             this.tileDNNAwareness.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -573,7 +541,7 @@
             this.tileDNNAwareness.Size = new System.Drawing.Size(131, 50);
             this.tileDNNAwareness.Style = MetroFramework.MetroColorStyle.Blue;
             this.tileDNNAwareness.TabIndex = 28;
-            this.tileDNNAwareness.Text = "@DNNAwareness";
+            this.tileDNNAwareness.Text = "@nopCommerce";
             this.tileDNNAwareness.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold;
             this.tileDNNAwareness.Click += new System.EventHandler(this.tileDNNAwareness_Click);
             // 
@@ -585,7 +553,7 @@
             this.tileDNNDocs.Size = new System.Drawing.Size(144, 50);
             this.tileDNNDocs.Style = MetroFramework.MetroColorStyle.Lime;
             this.tileDNNDocs.TabIndex = 29;
-            this.tileDNNDocs.Text = "DNN Docs";
+            this.tileDNNDocs.Text = "NOP Docs";
             this.tileDNNDocs.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.tileDNNDocs.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold;
             this.tileDNNDocs.Click += new System.EventHandler(this.tileDNNDocs_Click);
@@ -623,7 +591,7 @@
             this.tileDNNCommunity.Size = new System.Drawing.Size(278, 50);
             this.tileDNNCommunity.Style = MetroFramework.MetroColorStyle.Purple;
             this.tileDNNCommunity.TabIndex = 31;
-            this.tileDNNCommunity.Text = "DNN Community";
+            this.tileDNNCommunity.Text = "NOP Community";
             this.tileDNNCommunity.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.tileDNNCommunity.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold;
             this.tileDNNCommunity.Click += new System.EventHandler(this.tileDNNCommunity_Click);
@@ -648,9 +616,9 @@
             this.tileQuickSettings.Size = new System.Drawing.Size(162, 104);
             this.tileQuickSettings.Style = MetroFramework.MetroColorStyle.Orange;
             this.tileQuickSettings.TabIndex = 27;
-            this.tileQuickSettings.Text = "nvQuickSite Settings";
+            this.tileQuickSettings.Text = "nvQuickNop Settings";
             this.tileQuickSettings.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.tileQuickSettings.TileImage = global::nvQuickSite.Properties.Resources.user_settings;
+            this.tileQuickSettings.TileImage = global::nvQuickNop.Properties.Resources.user_settings;
             this.tileQuickSettings.TileImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.tileQuickSettings.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold;
             this.tileQuickSettings.UseTileImage = true;
@@ -676,8 +644,6 @@
             this.tabInstallPackage.ResumeLayout(false);
             this.tabInstallPackage.PerformLayout();
             this.tabControl.ResumeLayout(false);
-            this.tabDatabaseInfo.ResumeLayout(false);
-            this.tabDatabaseInfo.PerformLayout();
             this.tabProgress.ResumeLayout(false);
             this.tabProgress.PerformLayout();
             this.ResumeLayout(false);
@@ -712,7 +678,7 @@
         private MetroFramework.Controls.MetroButton btnSiteInfoBack;
         private MetroFramework.Controls.MetroTabPage tabProgress;
         private MetroFramework.Controls.MetroProgressBar progressBar;
-        private MetroFramework.Controls.MetroTabPage tabDatabaseInfo;
+        //private MetroFramework.Controls.MetroTabPage tabDatabaseInfo;
         private MetroFramework.Controls.MetroLabel lblDBServerName;
         private MetroFramework.Controls.MetroTextBox txtDBServerName;
         private MetroFramework.Controls.MetroLabel lblDBName;
