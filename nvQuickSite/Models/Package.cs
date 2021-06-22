@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with nvQuickSite.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace nvQuickSite.Models
+namespace nvQuickNop.Models
 {
     /// <summary>
     /// Represents one package.

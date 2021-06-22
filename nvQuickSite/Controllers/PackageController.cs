@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with nvQuickSite.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace nvQuickSite.Controllers
+namespace nvQuickNop.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace nvQuickSite.Controllers
     using System.Linq;
     using System.Net;
 
-    using nvQuickSite.Models;
+    using nvQuickNop.Models;
     using Octokit;
     using Serilog;
 
@@ -68,23 +68,11 @@ namespace nvQuickSite.Controllers
             var packages = localPackages.ToList();
             if (PackageController.IsOnline)
             {
-                var remotePackages = GetRemotePackages();
-                if (remotePackages.Any())
-                {
-                    packages = localPackages.Where(p => p.keep == true).ToList();
-                    foreach (var package in remotePackages)
-                    {
-                        if (packages.SingleOrDefault(p => p.did == package.did && p.version == package.version) == null)
-                        {
-                            packages.Add(package);
-                        }
-                    }
-                }
 
                 var ghPackages = GetGitHubPackages();
                 if (ghPackages.Any())
                 {
-                    packages = packages.Union(ghPackages).ToList();
+                    packages = ghPackages.ToList();
                 }
             }
 
@@ -97,7 +85,7 @@ namespace nvQuickSite.Controllers
         private static IEnumerable<Package> GetLocalPackages()
         {
             var localPackages = new List<Package>();
-            var packagesFile = Directory.GetCurrentDirectory() + @"\Downloads\packages.json";
+            var packagesFile = Directory.GetCurrentDirectory() + @"\Downloads\packages.nop.json";
             if (File.Exists(packagesFile))
             {
                 using (var sr = new StreamReader(packagesFile))
@@ -120,31 +108,10 @@ namespace nvQuickSite.Controllers
                 Directory.CreateDirectory(downloadDirectory);
             }
 
-            var pfile = Directory.GetCurrentDirectory() + @"\Downloads\packages.json";
+            var pfile = Directory.GetCurrentDirectory() + @"\Downloads\packages.nop.json";
             using (var sw = new StreamWriter(pfile))
             {
                 sw.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(packages, Newtonsoft.Json.Formatting.Indented));
-            }
-        }
-
-        private static IEnumerable<Package> GetRemotePackages()
-        {
-            using (WebClient client = new WebClient())
-            {
-                try
-                {
-                    var url = "https://github.com/nvisionative/nvQuickSite/raw/master/nvQuickSite/data/packages.json";
-                    string result = client.DownloadString(url);
-                    var packages = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Package>>(result);
-                    Log.Logger.Information("Loaded remote packages");
-                    Log.Logger.Debug("Loaded remote packages: {@packages}", packages);
-                    return packages;
-                }
-                catch (WebException ex)
-                {
-                    Log.Logger.Error(ex, "Unexpected error occurred retrieving remote packages.");
-                    return new List<Package>();
-                }
             }
         }
 
@@ -163,23 +130,23 @@ namespace nvQuickSite.Controllers
             try
             {
                 var client = new GitHubClient(new ProductHeaderValue("nvQuickSite"));
-                var releases = client.Repository.Release.GetAll("dnnsoftware", "Dnn.Platform").Result;
+                var releases = client.Repository.Release.GetAll("nopSolutions", "nopCommerce").Result;
 
                 if (releases.Count > 0)
                 {
                     var index = 0;
-                    foreach (Release release in releases)
+                    foreach (Release release in releases.Where(x => !x.Name.ToLower().Contains("beta")))
                     {
                         var installPackage = release.Assets
                             .Where(a =>
-                                a.BrowserDownloadUrl.IndexOf("install", StringComparison.OrdinalIgnoreCase) > -1 &&
-                                a.BrowserDownloadUrl.IndexOf("dnn_platform", StringComparison.OrdinalIgnoreCase) > -1)
+                                a.BrowserDownloadUrl.IndexOf("nosource_win_x64", StringComparison.OrdinalIgnoreCase) > -1 ||
+                                a.BrowserDownloadUrl.IndexOf("_nosource.rar", StringComparison.OrdinalIgnoreCase) > -1)
                             .FirstOrDefault();
 
                         var upgradePackage = release.Assets
                             .Where(a =>
-                                a.BrowserDownloadUrl.IndexOf("upgrade", StringComparison.OrdinalIgnoreCase) > -1 &&
-                                a.BrowserDownloadUrl.IndexOf("dnn_platform", StringComparison.OrdinalIgnoreCase) > -1)
+                                a.BrowserDownloadUrl.IndexOf("source", StringComparison.OrdinalIgnoreCase) > -1 &&
+                                a.BrowserDownloadUrl.IndexOf("nopcommerce", StringComparison.OrdinalIgnoreCase) > -1)
                             .FirstOrDefault();
 
                         var ghPackage = new Package();
@@ -200,8 +167,8 @@ namespace nvQuickSite.Controllers
                         else if (!release.Name.ToUpperInvariant().Contains("RC") &&
                             installPackage != null)
                         {
-                            ghPackage.did = "dnn-platform-" + ghPackage.version.Substring(0, 1);
-                            ghPackage.name = "DNN Platform " + ghPackage.version.Substring(0, 1);
+                            ghPackage.did = "nopcommerce_" + ghPackage.version.Substring(0,4);
+                            ghPackage.name = "nopCommerce " + ghPackage.version.Substring(0,4);
                             ghPackage.url = installPackage.BrowserDownloadUrl;
                             ghPackage.upgradeurl = upgradePackage.BrowserDownloadUrl;
                             packages.Add(ghPackage);
@@ -211,22 +178,22 @@ namespace nvQuickSite.Controllers
                     }
                 }
 
-                Log.Logger.Information("Retrieved DNN packages from GitHub");
-                Log.Logger.Debug("Retrieved DNN packages from GitHub: {@packages}", packages);
+                Log.Logger.Information("Retrieved NopCommerce packages from GitHub");
+                Log.Logger.Debug("Retrieved NopCommerce packages from GitHub: {@packages}", packages);
                 return packages;
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, "Unexpected error occurred retrieving DNN packages from GitHub");
+                Log.Logger.Error(ex, "Unexpected error occurred retrieving NopCommerce packages from GitHub");
                 return packages;
             }
         }
 
         private static string TrimTagName(Release release)
         {
-            if (release.TagName != null && release.TagName[0] == 'v')
+            if (release.TagName != null && release.TagName.StartsWith("release-"))
             {
-                return release.TagName.Remove(0, 1);
+                return release.TagName.Substring(8);
             }
             else
             {

@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with nvQuickSite.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace nvQuickSite.Properties
+namespace nvQuickNop.Properties
 {
     /// <summary>
     /// This class allows you to handle specific events on the settings class.

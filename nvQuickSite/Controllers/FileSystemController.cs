@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with nvQuickSite.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace nvQuickSite.Controllers
+namespace nvQuickNop.Controllers
 {
     using System;
     using System.IO;
@@ -23,7 +23,7 @@ namespace nvQuickSite.Controllers
     using System.Security.AccessControl;
     using System.Xml.Linq;
 
-    using nvQuickSite.Controllers.Exceptions;
+    using nvQuickNop.Controllers.Exceptions;
     using Serilog;
 
     /// <summary>
@@ -135,77 +135,26 @@ namespace nvQuickSite.Controllers
         /// <param name="installFolder">The path to the installation folder.</param>
         /// <param name="siteName">The name of the website.</param>
         /// <param name="useSiteSpecificAppPool">A value indicating whether to use a site specific App Pool.</param>
-        /// <param name="dbInstanceName">The name of the database instance.</param>
-        /// <param name="dbServerName">The name of the database server.</param>
-        /// <param name="usesWindowsAuthentication">A value indicating whether to use windows authentication for the databas access.</param>
-        /// <param name="dbUserName">The database username.</param>
-        /// <param name="dbPassword">The database password.</param>
-        internal static void CreateDirectories(string installFolder, string siteName, bool useSiteSpecificAppPool, string dbInstanceName, string dbServerName, bool usesWindowsAuthentication, string dbUserName, string dbPassword)
+        internal static void CreateDirectories(string installFolder, string siteName, bool useSiteSpecificAppPool)
         {
             Log.Logger.Information("Creating file system directories for {siteName}", siteName);
             var websiteDir = installFolder + "\\Website";
-            var logsDir = installFolder + "\\Logs";
-            var databaseDir = installFolder + "\\Database";
-
-            var appPoolName = @"IIS APPPOOL\DefaultAppPool";
-            var dbServiceAccount = GetDBServiceAccount(dbInstanceName);
-            var authenticatedUsers = GetAuthenticatedUsersAccount();
-
-            if (useSiteSpecificAppPool)
-            {
-                appPoolName = @"IIS APPPOOL\" + siteName + "_nvQuickSite";
-            }
 
             if (!Directory.Exists(websiteDir))
             {
                 Directory.CreateDirectory(websiteDir);
-                SetFolderPermission(appPoolName, websiteDir);
-                SetFolderPermission(authenticatedUsers, websiteDir);
+                //SetFolderPermission(appPoolName, websiteDir);
+                //SetFolderPermission(authenticatedUsers, websiteDir);
             }
             else
             {
                 DeleteDirectory(websiteDir, null, true);
                 Directory.CreateDirectory(websiteDir);
-                SetFolderPermission(appPoolName, websiteDir);
-                SetFolderPermission(authenticatedUsers, websiteDir);
+                //SetFolderPermission(appPoolName, websiteDir);
+                //SetFolderPermission(authenticatedUsers, websiteDir);
             }
 
-            if (!Directory.Exists(logsDir))
-            {
-                Directory.CreateDirectory(logsDir);
-                SetFolderPermission(dbServiceAccount, logsDir);
-                SetFolderPermission(authenticatedUsers, logsDir);
-            }
-            else
-            {
-                DeleteDirectory(logsDir, null, true);
-                Directory.CreateDirectory(logsDir);
-                SetFolderPermission(dbServiceAccount, logsDir);
-                SetFolderPermission(authenticatedUsers, logsDir);
-            }
-
-            if (!Directory.Exists(databaseDir))
-            {
-                Directory.CreateDirectory(databaseDir);
-                SetFolderPermission(dbServiceAccount, databaseDir);
-                SetFolderPermission(authenticatedUsers, databaseDir);
-            }
-            else
-            {
-                if (!DirectoryEmpty(databaseDir))
-                {
-                    var myDBFile = Directory.EnumerateFiles(databaseDir, "*.mdf").First().Split('_').First().Split('\\').Last();
-                    DatabaseController databaseController = new DatabaseController(myDBFile, dbServerName, usesWindowsAuthentication, dbUserName, dbPassword, installFolder, useSiteSpecificAppPool, siteName);
-                    databaseController.DropDatabase();
-                }
-
-                DeleteDirectory(databaseDir, null, true);
-                Directory.CreateDirectory(databaseDir);
-                SetFolderPermission(dbServiceAccount, databaseDir);
-                SetFolderPermission(authenticatedUsers, databaseDir);
-            }
-
-            string[] createdFolders = { websiteDir, logsDir, databaseDir };
+            string[] createdFolders = { websiteDir};
             Log.Logger.Information("Created folders {createdFolders}", createdFolders);
         }
 
@@ -258,29 +207,35 @@ namespace nvQuickSite.Controllers
                 }
                 else
                 {
-                    connectionStringAuthSection = $"User ID={dbUserName};Password={dbPassword};";
+                    connectionStringAuthSection = $"Integrated Security=False;User ID={dbUserName};Password={dbPassword};";
                 }
 
                 string key = "SiteSqlServer";
-                string value = $"Server={dbServerName};Database={dbName};{connectionStringAuthSection}";
+                string value = $"Server={dbServerName};Database={dbName};{connectionStringAuthSection}Persist Security Info=False;";
+                //ajwaka - this is NOP's connectionString path.
+                string path = Path.Combine(installFolder, "Website","App_Data", "Settings.txt");
 
-                string path = Path.Combine(installFolder, "Website", "web.config");
+                var fileContents = File.ReadAllLines(path);
+                var targetLine = fileContents.First(x => x.StartsWith("DataConnectionString:"));
+                targetLine = $"DataConnectionString: {value}";
 
-                var config = XDocument.Load(path);
-                var targetNode = config.Root.Element("connectionStrings").Element("add").Attribute("connectionString");
-                targetNode.Value = value;
+                File.WriteAllLines(path, fileContents);
 
-                var list = from appNode in config.Descendants("appSettings").Elements()
-                           where appNode.Attribute("key").Value == key
-                           select appNode;
+                //var config = XDocument.Load(path);
+                //var targetNode = config.Root.Element("connectionStrings").Element("add").Attribute("connectionString");
+                //targetNode.Value = value;
 
-                var e = list.FirstOrDefault();
-                if (e != null)
-                {
-                    e.Attribute("value").SetValue(value);
-                }
+                //var list = from appNode in config.Descendants("appSettings").Elements()
+                //           where appNode.Attribute("key").Value == key
+                //           select appNode;
 
-                config.Save(path);
+                //var e = list.FirstOrDefault();
+                //if (e != null)
+                //{
+                //    e.Attribute("value").SetValue(value);
+                //}
+
+                //config.Save(path);
             }
             catch (Exception ex)
             {

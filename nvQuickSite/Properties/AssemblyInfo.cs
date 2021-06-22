@@ -22,12 +22,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("nvQuickSite")]
-[assembly: AssemblyDescription("Windows application to help quickly perform a local DotNetNuke (DNN) installation.")]
+[assembly: AssemblyTitle("nvQuickNop")]
+[assembly: AssemblyDescription("Windows application to help quickly perform a local nopCommerce (NOP) installation.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("nvisionative, Inc.")]
-[assembly: AssemblyProduct("nvQuickSite")]
-[assembly: AssemblyCopyright("Copyright © 2016-2020 nvisionative, Inc.")]
+[assembly: AssemblyCompany("Foremost Media, Inc.")]
+[assembly: AssemblyProduct("nvQuickNop")]
+[assembly: AssemblyCopyright("Copyright © 2021 Foremost Media, Inc.")]
 [assembly: AssemblyTrademark("TM")]
 [assembly: AssemblyCulture("")]
 
@@ -49,6 +49,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.1.0")]
-[assembly: AssemblyFileVersion("2.1.0")]
+[assembly: AssemblyVersion("2.1.1")]
+[assembly: AssemblyFileVersion("2.1.1")]
 [assembly: NeutralResourcesLanguage("en")]

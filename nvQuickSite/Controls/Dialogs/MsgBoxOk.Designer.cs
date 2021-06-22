@@ -1,4 +1,4 @@
-﻿namespace nvQuickSite.Controls.Dialogs
+﻿namespace nvQuickNop.Controls.Dialogs
 {
     partial class MsgBoxOk
     {

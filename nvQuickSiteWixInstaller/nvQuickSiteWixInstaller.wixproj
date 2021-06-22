@@ -6,7 +6,7 @@
     <ProductVersion>3.10</ProductVersion>
     <ProjectGuid>8eff619d-489b-4d79-911a-061f33aad86d</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>nvQuickSiteWixInstaller</OutputName>
+    <OutputName>nvQuickNopWixInstaller</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -20,16 +20,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Product.wxs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\nvQuickSite\nvQuickSite.csproj">
-      <Name>nvQuickSite</Name>
-      <Project>{3d661bad-45eb-4524-9650-78805cd31682}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WixExtension Include="WixNetFxExtension">
@@ -50,6 +40,16 @@
     <Content Include="dialog.bmp" />
     <Content Include="License.rtf" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\nvQuickSite\nvQuickNop.csproj">
+      <Name>nvQuickNop</Name>
+      <Project>{3d661bad-45eb-4524-9650-78805cd31682}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
   <!--<Target Name="GetVersion" DependsOnTargets="SetVersion">
@@ -58,7 +58,7 @@
   <Import Project="$(WixTargetsPath)" />
   <Target Name="BeforeBuild">
     <!-- Read the version from the to-be-installed .exe -->
-    <GetAssemblyIdentity AssemblyFiles="$(SolutionDir)\nvQuickSite\bin\Release\nvQuickSite.exe">
+    <GetAssemblyIdentity AssemblyFiles="$(SolutionDir)\nvQuickSite\bin\Release\nvQuickNop.exe">
       <Output TaskParameter="Assemblies" ItemName="AsmInfo" />
     </GetAssemblyIdentity>
     <!-- Create the MSBuild property $(VersionNumber) -->
@@ -70,7 +70,7 @@
       <Output TaskParameter="Value" PropertyName="DefineConstants" />
     </CreateProperty>
     <!-- Update the MSBuild properties $(TargetName), etc. -->
-    <CreateProperty Value="nvQuickSite_v$(VersionNumber)_Installer">
+    <CreateProperty Value="nvQuickNop_v$(VersionNumber)_Installer">
       <Output TaskParameter="Value" PropertyName="TargetName" />
     </CreateProperty>
     <CreateProperty Value="$(TargetName)$(TargetExt)">

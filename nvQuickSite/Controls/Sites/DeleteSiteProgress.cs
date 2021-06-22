@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with nvQuickSite.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace nvQuickSite.Controls.Sites
+namespace nvQuickNop.Controls.Sites
 {
     using System;
     using System.Diagnostics.Contracts;
@@ -27,7 +27,7 @@ namespace nvQuickSite.Controls.Sites
 
     using MetroFramework.Forms;
     using Microsoft.Web.Administration;
-    using nvQuickSite.Controllers;
+    using nvQuickNop.Controllers;
 
     /// <summary>
     /// Implementes the user specific settings form.

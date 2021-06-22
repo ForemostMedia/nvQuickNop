@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-  <Product Id="*" UpgradeCode="C2643FC9-C49A-498F-B094-203933EBB97E" Version="$(var.VersionNumber)" Language="1033" Name="nvQuickSite" Manufacturer="nvisionative">
+  <Product Id="*" UpgradeCode="C2643FC9-C49A-498F-B094-203933EBB97E" Version="$(var.VersionNumber)" Language="1033" Name="nvQuickNop" Manufacturer="foremostmedia">
     <Package InstallerVersion="300" Compressed="yes" />
-    <Media Id="1" Cabinet="nvQuickSite.cab" EmbedCab="yes" />
+    <Media Id="1" Cabinet="nvQuicNop.cab" EmbedCab="yes" />
     <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
     <WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
     <WixVariable Id="WixUIDialogBmp" Value="dialog.bmp" />
-    <Icon Id="nvisionativeIcon" SourceFile="$(var.nvQuickSite.ProjectDir)\Resources\nvisionative.ico"/>
+    <Icon Id="nvisionativeIcon" SourceFile="$(var.nvQuickNop.ProjectDir)\Resources\nvisionative.ico"/>
     <Property Id="ARPPRODUCTICON" Value="nvisionativeIcon" />
     
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -18,71 +18,71 @@
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="ApplicationProgramsFolder" Name="nvisionative"/>
+        <Directory Id="ApplicationProgramsFolder" Name="foremostmedia"/>
       </Directory>
       <Directory Id="ProgramFilesFolder">
-        <Directory Id="ManufacturerDirectory" Name="nvisionative">
-          <Directory Id="ApplicationRootDirectory" Name="nvQuickSite" />
+        <Directory Id="ManufacturerDirectory" Name="foremostmedia">
+          <Directory Id="ApplicationRootDirectory" Name="nvQuickNop" />
         </Directory>
       </Directory>
     </Directory>
 
     <DirectoryRef Id="ApplicationProgramsFolder">
       <Component Id="ApplicationShortcut">
-        <Shortcut Id="ApplicationStartMenuShortcut" Name="nvQuickSite" Description="Really Quick DNN Installer" Target="[#nvQuickSite.exe]" WorkingDirectory="ApplicationRootDirectory"/>
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="nvQuickNop" Description="Really Quick Nop Installer" Target="[#nvQuickNop.exe]" WorkingDirectory="ApplicationRootDirectory"/>
         <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
-        <RegistryValue Root="HKCU" Key="Software\nvisionative\nvQuickSite" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+        <RegistryValue Root="HKCU" Key="Software\foremostmedia\nvQuickNop" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
       </Component>
     </DirectoryRef>
 
     <DirectoryRef Id="ApplicationRootDirectory">
       <Component Id="Analytics.NET">
-        <File Source="$(var.nvQuickSite.TargetDir)\Analytics.NET.dll" />
+        <File Source="$(var.nvQuickNop.TargetDir)\Analytics.NET.dll" />
       </Component>
       <Component Id="DotNetZip">
-        <File Source="$(var.nvQuickSite.TargetDir)\DotNetZip.dll" />
+        <File Source="$(var.nvQuickNop.TargetDir)\SharpCompress.dll" />
       </Component>
       <Component Id="MetroFramework.Design">
-        <File Source="$(var.nvQuickSite.TargetDir)\MetroFramework.Design.dll" />
+        <File Source="$(var.nvQuickNop.TargetDir)\MetroFramework.Design.dll" />
       </Component>
       <Component Id="MetroFramework">
-        <File Source="$(var.nvQuickSite.TargetDir)\MetroFramework.dll" />
+        <File Source="$(var.nvQuickNop.TargetDir)\MetroFramework.dll" />
       </Component>
       <Component Id="MetroFramework.Fonts">
-        <File Source="$(var.nvQuickSite.TargetDir)\MetroFramework.Fonts.dll" />
+        <File Source="$(var.nvQuickNop.TargetDir)\MetroFramework.Fonts.dll" />
       </Component>
       <Component Id="Newtonsoft.Json">
-        <File Source="$(var.nvQuickSite.TargetDir)\Newtonsoft.Json.dll" />
+        <File Source="$(var.nvQuickNop.TargetDir)\Newtonsoft.Json.dll" />
       </Component>
       <Component Id="Octokit">
-        <File Source="$(var.nvQuickSite.TargetDir)\Octokit.dll" />
+        <File Source="$(var.nvQuickNop.TargetDir)\Octokit.dll" />
       </Component>
       <Component Id="Ookii.Dialogs">
-        <File Source="$(var.nvQuickSite.TargetDir)\Ookii.Dialogs.dll" />
+        <File Source="$(var.nvQuickNop.TargetDir)\Ookii.Dialogs.dll" />
       </Component>
       <Component Id="OSVersionInfo">
-        <File Source="$(var.nvQuickSite.TargetDir)\OSVersionInfo.dll" />
+        <File Source="$(var.nvQuickNop.TargetDir)\OSVersionInfo.dll" />
       </Component>
       <Component Id="Microsoft.Web.Administration">
-        <File Source="$(var.nvQuickSite.TargetDir)\Microsoft.Web.Administration.dll" />
+        <File Source="$(var.nvQuickNop.TargetDir)\Microsoft.Web.Administration.dll" />
       </Component>
       <Component Id="nvQuickSite">
-        <File Source="$(var.nvQuickSite.TargetPath)" />
+        <File Source="$(var.nvQuickNop.TargetPath)" />
       </Component>
       <Component Id="nvQuickSite.exe.config">
-        <File Source="$(var.nvQuickSite.TargetDir)\nvQuickSite.exe.config" />
+        <File Source="$(var.nvQuickNop.TargetDir)\nvQuickNop.exe.config" />
       </Component>
       <Component Id="Serilog">
-        <File Source="$(var.nvQuickSite.TargetDir)\Serilog.dll" />
+        <File Source="$(var.nvQuickNop.TargetDir)\Serilog.dll" />
       </Component>
       <Component Id="Serilog.Sinks.Console">
-        <File Source="$(var.nvQuickSite.TargetDir)\Serilog.Sinks.Console.dll" />
+        <File Source="$(var.nvQuickNop.TargetDir)\Serilog.Sinks.Console.dll" />
       </Component>
       <Component Id="Serilog.Sinks.Debug">
-        <File Source="$(var.nvQuickSite.TargetDir)\Serilog.Sinks.Debug.dll" />
+        <File Source="$(var.nvQuickNop.TargetDir)\Serilog.Sinks.Debug.dll" />
       </Component>
       <Component Id="Serilog.Sinks.File">
-        <File Source="$(var.nvQuickSite.TargetDir)\Serilog.Sinks.File.dll" />
+        <File Source="$(var.nvQuickNop.TargetDir)\Serilog.Sinks.File.dll" />
       </Component>
     </DirectoryRef>
 

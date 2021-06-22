@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nvQuickSite", "nvQuickSite\nvQuickSite.csproj", "{3D661BAD-45EB-4524-9650-78805CD31682}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nvQuickNop", "nvQuickSite\nvQuickNop.csproj", "{3D661BAD-45EB-4524-9650-78805CD31682}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "nvQuickSiteWixInstaller", "nvQuickSiteWixInstaller\nvQuickSiteWixInstaller.wixproj", "{8EFF619D-489B-4D79-911A-061F33AAD86D}"
 EndProject

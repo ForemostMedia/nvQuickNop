@@ -15,13 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with nvQuickSite.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace nvQuickSite.Controllers
+namespace nvQuickNop.Controllers
 {
     using System;
     using System.Data;
     using System.Data.SqlClient;
 
-    using nvQuickSite.Controllers.Exceptions;
+    using nvQuickNop.Controllers.Exceptions;
     using Serilog;
 
     /// <summary>
@@ -200,8 +200,8 @@ namespace nvQuickSite.Controllers
 
                 if (this.usesSiteSpecificAppPool)
                 {
-                    appPoolNameFull = $@"IIS APPPOOL\{this.siteName}_nvQuickSite";
-                    appPoolName = $"{this.siteName}_nvQuickSite";
+                    appPoolNameFull = $@"IIS APPPOOL\{this.siteName}_nvQuickNop";
+                    appPoolName = $"{this.siteName}_nvQuickNop";
                 }
 
                 SqlCommand useMaster = new SqlCommand("USE master", myConn);

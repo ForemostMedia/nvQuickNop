@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with nvQuickSite.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace nvQuickSite
+namespace nvQuickNop
 {
     using System;
     using System.Diagnostics;
@@ -25,8 +25,8 @@ namespace nvQuickSite
 
     using JCS;
     using MetroFramework.Forms;
-    using nvQuickSite.Controllers;
-    using nvQuickSite.Controllers.Exceptions;
+    using nvQuickNop.Controllers;
+    using nvQuickNop.Controllers.Exceptions;
     using Segment;
     using Serilog;
     using Serilog.Core;
@@ -96,12 +96,12 @@ namespace nvQuickSite
 
         private void footerImageLink_Click(object sender, EventArgs e)
         {
-            Process.Start("http://www.nvisionative.com");
+            Process.Start("https://github.com/foremostmedia/nvQuickSite");
         }
 
         private void tileGetNewVersion_Click(object sender, EventArgs e)
         {
-            Process.Start("https://github.com/nvisionative/nvQuickSite/releases/latest");
+            Process.Start("https://github.com/foremostmedia/nvQuickSite/releases/latest");
         }
     }
 }
