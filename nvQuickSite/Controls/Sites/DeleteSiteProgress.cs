@@ -115,6 +115,7 @@ namespace nvQuickNop.Controls.Sites
                         string.Empty,
                         string.Empty,
                         installFolder.FullName,
+                        this.sitePath,
                         true,
                         this.site.Name);
                     await Task.Run(() => databaseController.DeleteDatabase(deleteDatabaseProgress)).ConfigureAwait(true);
