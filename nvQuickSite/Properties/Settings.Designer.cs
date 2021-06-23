@@ -133,7 +133,7 @@ namespace nvQuickNop.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(".dnndev.me")]
+        [global::System.Configuration.DefaultSettingValueAttribute(".local")]
         public string SiteNameSuffixRecent {
             get {
                 return ((string)(this["SiteNameSuffixRecent"]));
@@ -157,7 +157,7 @@ namespace nvQuickNop.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool ShareStatistics {
             get {
                 return ((bool)(this["ShareStatistics"]));
@@ -193,7 +193,7 @@ namespace nvQuickNop.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool EnableLocalPackageInstall {
             get {
                 return ((bool)(this["EnableLocalPackageInstall"]));

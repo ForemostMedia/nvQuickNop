@@ -410,8 +410,8 @@ namespace nvQuickNop
 
         private void txtSiteNamePrefix_TextChanged(object sender, EventArgs e)
         {
-            this.txtInstallSubFolder.Text = this.txtSiteNamePrefix.Text;
-            this.txtDBName.Text = this.txtSiteNamePrefix.Text;
+            //this.txtInstallSubFolder.Text = this.txtSiteNamePrefix.Text;
+            //this.txtDBName.Text = this.txtSiteNamePrefix.Text;
         }
 
         private void btnSiteInfoNext_Click(object sender, EventArgs e)

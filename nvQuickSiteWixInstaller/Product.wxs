@@ -84,6 +84,21 @@
       <Component Id="Serilog.Sinks.File">
         <File Source="$(var.nvQuickNop.TargetDir)\Serilog.Sinks.File.dll" />
       </Component>
+        <Component Id="System.Buffers">
+            <File Source="$(var.nvQuickNop.TargetDir)\System.Buffers.dll" />
+        </Component>
+        <Component Id="System.Memory">
+            <File Source="$(var.nvQuickNop.TargetDir)\System.Memory.dll" />
+        </Component>
+        <Component Id="System.Numerics.Vectors">
+            <File Source="$(var.nvQuickNop.TargetDir)\System.Numerics.Vectors.dll" />
+        </Component>
+        <Component Id="System.Runtime.CompilerServices.Unsafe">
+            <File Source="$(var.nvQuickNop.TargetDir)\System.Runtime.CompilerServices.Unsafe.dll" />
+        </Component>
+        <Component Id="System.Text.Encoding.CodePages">
+            <File Source="$(var.nvQuickNop.TargetDir)\System.Text.Encoding.CodePages.dll" />
+        </Component>
     </DirectoryRef>
 
     <Feature Id="MainApplication" Title="Main Application" Level="1">
@@ -104,6 +119,11 @@
       <ComponentRef Id="Serilog.Sinks.Console" />
       <ComponentRef Id="Serilog.Sinks.Debug" />
       <ComponentRef Id="Serilog.Sinks.File" />
+      <ComponentRef Id="System.Buffers" />
+      <ComponentRef Id="System.Memory" />
+      <ComponentRef Id="System.Numerics.Vectors" />
+      <ComponentRef Id="System.Runtime.CompilerServices.Unsafe" />
+      <ComponentRef Id="System.Text.Encoding.CodePages" />
     </Feature>
 
     <UI>

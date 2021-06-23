@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="nvQuickSite.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="nvQuickNop.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="InstallBaseFolderRecent" Type="System.String" Scope="User">
@@ -30,13 +30,13 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SiteNameSuffixRecent" Type="System.String" Scope="User">
-      <Value Profile="(Default)">.dnndev.me</Value>
+      <Value Profile="(Default)">.local</Value>
     </Setting>
     <Setting Name="ShowReleaseCandidates" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ShareStatistics" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="UpdateSettings" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -45,7 +45,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="EnableLocalPackageInstall" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

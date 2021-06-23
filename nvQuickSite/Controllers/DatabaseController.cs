@@ -15,6 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with nvQuickSite.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Configuration;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Newtonsoft.Json;
+using nvQuickNop.Models;
+
 namespace nvQuickNop.Controllers
 {
     using System;
@@ -35,6 +42,7 @@ namespace nvQuickNop.Controllers
         private readonly string dbUserName;
         private readonly string dbPassword;
         private readonly string installFolder;
+        private readonly string sitePath;
         private readonly bool usesSiteSpecificAppPool;
         private readonly object siteName;
 
@@ -47,15 +55,16 @@ namespace nvQuickNop.Controllers
         /// <param name="dbUserName">The database user name, ignored if using windows authentication.</param>
         /// <param name="dbPassword">The database password, ignored if using widows authentication.</param>
         /// <param name="installFolder">The path to the installation folder.</param>
+        /// <param name="sitePath"></param>
         /// <param name="usesSiteSpecificAppPool">A value indicating whether the IIS site should use a dedicated App Pool.</param>
         /// <param name="siteName">The name of the website.</param>
-        public DatabaseController(
-            string dbName,
+        public DatabaseController(string dbName,
             string dbServerName,
             bool usesWindowsAuthentication,
             string dbUserName,
             string dbPassword,
             string installFolder,
+            string sitePath,
             bool usesSiteSpecificAppPool,
             string siteName)
         {
@@ -67,6 +76,7 @@ namespace nvQuickNop.Controllers
             this.installFolder = installFolder;
             this.usesSiteSpecificAppPool = usesSiteSpecificAppPool;
             this.siteName = siteName;
+            this.sitePath = sitePath;
         }
 
         /// <summary>
@@ -75,23 +85,32 @@ namespace nvQuickNop.Controllers
         /// <exception cref="DatabaseControllerException">Is thrown when the database could not be dropped.</exception>
         public void DropDatabase()
         {
-            Log.Logger.Information("Dropping database {dbName}", this.dbName);
-            string myDBServerName = this.dbServerName;
+            Log.Logger.Debug("Get Connection String from Site");
+            var connString = GetConnectionStringFromSite(this.sitePath);
+            if (string.IsNullOrWhiteSpace(connString))
+            {
+                Log.Logger.Information("Database not found");
+                return;
+            }
+
+            var csb = new SqlConnectionStringBuilder(connString);
+            Log.Logger.Information("Dropping database {dbName}", csb.InitialCatalog);
+            string myDBServerName = csb.DataSource;
             string connectionStringAuthSection = string.Empty;
-            if (this.usesWindowsAuthentication)
+            if (csb.IntegratedSecurity)
             {
                 connectionStringAuthSection = "Integrated Security=True;";
             }
             else
             {
-                connectionStringAuthSection = "User ID=" + this.dbUserName + ";Password=" + this.dbPassword + ";";
+                connectionStringAuthSection = "User ID=" + csb.UserID + ";Password=" + csb.Password + ";";
             }
 
             using (SqlConnection myConn = new SqlConnection("Server=" + myDBServerName + "; Initial Catalog=master;" + connectionStringAuthSection))
             {
                 string useMaster = @"USE master";
-                string dropDatabase = $@"IF EXISTS(SELECT name FROM sys.databases WHERE name = '{this.dbName}') " +
-                    $"DROP DATABASE [{this.dbName}]";
+                string dropDatabase = $@"IF EXISTS(SELECT name FROM sys.databases WHERE name = '{csb.InitialCatalog}') " +
+                    $"DROP DATABASE [{csb.InitialCatalog}]";
 
                 SqlCommand useMasterCommand = new SqlCommand(useMaster, myConn);
                 SqlCommand dropDatabaseCommand = new SqlCommand(dropDatabase, myConn);
@@ -104,7 +123,7 @@ namespace nvQuickNop.Controllers
                 }
                 catch (Exception ex)
                 {
-                    var message = $"Error attempting to drop database {this.dbName}";
+                    var message = $"Error attempting to drop database {csb.InitialCatalog}";
                     Log.Logger.Error(ex, message);
                     throw new DatabaseControllerException(message, ex) { Source = "Drop Database" };
                 }
@@ -119,7 +138,27 @@ namespace nvQuickNop.Controllers
                 }
             }
 
-            Log.Logger.Information("Database {dbName} dropped", this.dbName);
+            Log.Logger.Information("Database {dbName} dropped", csb.InitialCatalog);
+        }
+
+        private static string GetConnectionStringFromSite(string sitePath)
+        {
+            Log.Logger.Information("Loading db info from site");
+
+            if (File.Exists(Path.Combine(sitePath, "App_Data", "Settings.txt")))
+            {
+                var lines = File.ReadAllLines(Path.Combine(sitePath, "App_Data", "Settings.txt"));
+                return lines.FirstOrDefault(x => x.StartsWith("DataConnectionString:"))
+                    ?.Replace("DataConnectionString: ", "").Trim() ?? string.Empty;
+            }
+
+            if (File.Exists(Path.Combine(sitePath, "App_Data", "dataSettings.json")))
+            {
+                var obj = JsonConvert.DeserializeObject<Nop4DataSettings>(File.ReadAllText(Path.Combine(sitePath, "App_Data", "dataSettings.json")));
+                return obj.DataConnectionString;
+            }
+
+            return string.Empty;
         }
 
         /// <summary>

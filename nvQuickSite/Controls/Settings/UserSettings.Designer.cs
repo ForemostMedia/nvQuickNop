@@ -80,6 +80,7 @@
             // 
             this.chkShowReleaseCandidates.AutoSize = true;
             this.chkShowReleaseCandidates.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.chkShowReleaseCandidates.Enabled = false;
             this.chkShowReleaseCandidates.Location = new System.Drawing.Point(118, 53);
             this.chkShowReleaseCandidates.Name = "chkShowReleaseCandidates";
             this.chkShowReleaseCandidates.Size = new System.Drawing.Size(156, 15);
@@ -102,9 +103,8 @@
             // chkShareStatistics
             // 
             this.chkShareStatistics.AutoSize = true;
-            this.chkShareStatistics.Checked = true;
-            this.chkShareStatistics.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShareStatistics.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.chkShareStatistics.Enabled = false;
             this.chkShareStatistics.ForeColor = System.Drawing.SystemColors.ControlText;
             this.chkShareStatistics.Location = new System.Drawing.Point(118, 74);
             this.chkShareStatistics.Name = "chkShareStatistics";
@@ -116,6 +116,8 @@
             // chkEnableLocalPackageInstall
             // 
             this.chkEnableLocalPackageInstall.AutoSize = true;
+            this.chkEnableLocalPackageInstall.Checked = true;
+            this.chkEnableLocalPackageInstall.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkEnableLocalPackageInstall.Cursor = System.Windows.Forms.Cursors.Hand;
             this.chkEnableLocalPackageInstall.Location = new System.Drawing.Point(118, 95);
             this.chkEnableLocalPackageInstall.Name = "chkEnableLocalPackageInstall";
